@@ -1,0 +1,36 @@
+<div>
+    <form [formGroup]="wpriceForm">
+        <label>
+            <li>
+            <input type="checkbox" formControlName="wash">
+            Washing - $70
+            </li>
+        </label>
+        <br>
+        <label>
+            <li>
+            <input type="checkbox" formControlName="hair">
+            Hair Care - $50
+            </li>
+        </label>
+        <br>
+        <label>
+            <li>
+            <input type="checkbox" formControlName="deworming">
+            De-worming - $100
+            </li>
+        </label>
+        <hr>
+        <br>
+               
+            <p>Are you opt-in our membership program?</p>
+            <input type="radio" formControlName="membership" name="membership" value="yes">
+            <label><b>Yes</b> - <i>additional 10% Off</i></label>
+            <input type="radio" formControlName="membership" name="membership" value="no">
+            <label><b>No</b></label>
+        
+    </form>
+    <br>
+    <hr>
+    <h3 style="text-align: end">Total Price: ${{ wtotalPrice }}</h3>
+</div>

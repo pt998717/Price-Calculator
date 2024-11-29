@@ -1,0 +1,31 @@
+<body>
+<header>
+  <a style="margin-top: 20px;">Animal Hospital</a>
+</header>
+<nav>
+<div style="margin-top: 20px;margin-bottom: 20px;">
+  <button >Price Calculator</button>
+</div>
+</nav>
+
+<main>
+  <div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-secondary" (click)="selectAnimal('catVac')">Cat Vaccine & Sterilization</button>
+    <button type="button" class="btn btn-secondary" (click)="selectAnimal('catWellness')">Cat Wellness</button>
+  </div>
+  <div style="text-align: end;" ><button (click)="showBom()">Add To BOM</button></div>
+ <div class="flex-container">
+
+
+  <div class="flex-child">
+    <catVac *ngIf="selectedAnimal === 'catVac'"></catVac>
+    <catWellness *ngIf="selectedAnimal === 'catWellness'"></catWellness>
+  </div>
+    
+
+  <div class="flex-child">
+    <app-bom *ngIf="isComponentVisible"></app-bom>
+  </div>
+</div>
+</main>
+</body>

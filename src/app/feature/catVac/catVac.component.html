@@ -1,0 +1,70 @@
+
+  <div>
+    <!-- <h2 style="text-align: center;">Cat</h2> -->
+    <form [formGroup]="priceForm">
+      <input type="text" formControlName="name"  id="textInput" placeholder="Cat Name" [(ngModel)]="textInput" (input)="updateText()" ><br>
+      
+      <label>
+        <input type="checkbox" formControlName="exam">
+        Exam (recommand) - $50
+      </label>
+      <hr>
+      <a>Vaccine options</a><br>
+      <a><li>Core vaccines</li></a><br>
+      <label>
+        <input type="checkbox" formControlName="core1">
+        Feline panleukopenia virus - $50
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" formControlName="core2">
+        Feline viral rhinotracheitis, also known as herpes virus type 1 (FHV-1)
+        - $50
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" formControlName="core3">
+        Feline caliciviruses - $50
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" formControlName="core4">
+        Rabies virus - $50
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" formControlName="core5">
+        Feline leukemia virus (FeLV) - $50
+      </label>
+      <br>
+      <a><li>Non-Core vaccines</li></a><br>
+      <label>
+        <input type="checkbox" formControlName="noncore1">
+        Chlamydophila felis (causes feline chlamydiosis) - $100
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" formControlName="noncore2">
+        Bordetella bronchiseptica (causes feline bordetellosis) - $100
+      </label>
+      <br>
+      <label>
+        <input type="checkbox" formControlName="noncore3">
+        Feline leukemia virus (FeLV) in adult cats - $100
+      </label>
+      <br>
+      <hr>
+      <select formControlName="select">
+        <option value=""disabled selected>Neutering for Male/Female</option>
+        <option value="Male">Male - $250</option>
+        <option value="Female">Female - $320</option>
+      </select>
+    </form>
+    <br>
+    <hr>
+    <h3 style="text-align: end">Total Price: ${{ totalPrice }}</h3>
+  </div>
+
+
+
+  
