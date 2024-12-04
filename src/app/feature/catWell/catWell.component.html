@@ -3,21 +3,21 @@
         <label>
             <li>
             <input type="checkbox" formControlName="wash">
-            Washing - $70
+            Washing - $79.99
             </li>
         </label>
         <br>
         <label>
             <li>
             <input type="checkbox" formControlName="hair">
-            Hair Care - $50
+            Hair Care - $59.99
             </li>
         </label>
         <br>
         <label>
             <li>
             <input type="checkbox" formControlName="deworming">
-            De-worming - $100
+            De-worming - $109.99
             </li>
         </label>
         <hr>
@@ -32,5 +32,5 @@
     </form>
     <br>
     <hr>
-    <h3 style="text-align: end">Total Price: ${{ wtotalPrice }}</h3>
+    <h3 style="text-align: end">Total Price: ${{ wtotalPrice.toFixed(2) }}</h3>
 </div>

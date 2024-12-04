@@ -20,7 +20,7 @@ export class DogComponent implements OnInit {
     deworming: [false],
     membership: [false]
   });
-  this.DogService.formData
+  this.DogService.wformData
       .pipe(takeUntil(this.unsubscribe$)) // Automatically unsubscribe when the component is destroyed
       .subscribe((savedData) => {
         if (savedData) {
@@ -30,7 +30,7 @@ export class DogComponent implements OnInit {
       });
     }
   ngOnInit(): void {
-    this.DogService.formData
+    this.DogService.wformData
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((savedData) => {
       if (savedData && JSON.stringify(savedData) !== JSON.stringify(this.wpriceForm.value)) {
@@ -52,17 +52,17 @@ export class DogComponent implements OnInit {
   calculateTotalPrice(formData: any) {
     this.wtotalPrice = this.wbasePrice;
     if (this.wpriceForm.get('wash')?.value) {
-      this.wtotalPrice += 70; 
+      this.wtotalPrice += 79.99; 
     }
     if (this.wpriceForm.get('hair')?.value) {
-      this.wtotalPrice += 50; 
+      this.wtotalPrice += 59.99; 
     }
     if (this.wpriceForm.get('deworming')?.value) {
-      this.wtotalPrice += 100; 
+      this.wtotalPrice += 109.99; 
     }
-    if (this.wpriceForm.get('membership')?.value === 'yes') {
-      this.wtotalPrice = this.wtotalPrice * 0.9; 
-    }
+    // if (this.wpriceForm.get('membership')?.value === 'yes') {
+    //   this.wtotalPrice = this.wtotalPrice * 0.9; 
+    // }
     
   }
   ngOnDestroy(): void {

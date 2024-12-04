@@ -16,7 +16,7 @@ export class CalComponent implements OnInit {
   private unsubscribe$ = new Subject<void>(); // For cleanup
   constructor(private fb: FormBuilder, private priceService: PriceService) { 
     this.priceForm = this.fb.group({
-      name:"",
+      textInput:"",
       exam: [false],
       core1: [false],
       core2: [false],
@@ -79,38 +79,38 @@ export class CalComponent implements OnInit {
   calculateTotalPrice(formData: any) {
     this.totalPrice = this.basePrice;
     if (this.priceForm.get('exam')?.value) {
-      this.totalPrice += 50; 
+      this.totalPrice += 49.99; 
     }
     if (this.priceForm.get('core1')?.value) {
-      this.totalPrice += 50; 
+      this.totalPrice += 39.99; 
     }
     if (this.priceForm.get('core2')?.value) {
-      this.totalPrice += 50; 
+      this.totalPrice += 58.99; 
     }
     if (this.priceForm.get('core3')?.value) {
-      this.totalPrice += 50; 
+      this.totalPrice += 48.99; 
     }
     if (this.priceForm.get('core4')?.value) {
-      this.totalPrice += 50; 
+      this.totalPrice += 58.99; 
     }
     if (this.priceForm.get('core5')?.value) {
-      this.totalPrice += 50; 
+      this.totalPrice += 118.99; 
     }
     if (this.priceForm.get('noncore1')?.value) {
-      this.totalPrice += 100; 
+      this.totalPrice += 109.99; 
     }
     if (this.priceForm.get('noncore2')?.value) {
-      this.totalPrice += 100; 
+      this.totalPrice += 109.99; 
     }
     if (this.priceForm.get('noncore3')?.value) {
-      this.totalPrice += 100; 
+      this.totalPrice += 109.99; 
     }
     switch (this.priceForm.get('select')?.value){
       case 'Male':
-        this.totalPrice += 250;
+        this.totalPrice += 249.99;
         break;
       case 'Female':
-        this.totalPrice += 320;
+        this.totalPrice += 329.99;
         break;
     }
     
