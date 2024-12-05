@@ -1,33 +1,52 @@
 <div>
-    <form>
+    <form [formGroup]="wpriceForm">
         <label>
             <li>
-            <input type="checkbox" formControlName="wash">
-            Washing - $79.99
+                <input
+                    type="checkbox"
+                    formControlName="wash"
+                >
+                Washing - $79.99
             </li>
         </label>
         <br>
         <label>
             <li>
-            <input type="checkbox" formControlName="hair">
-            Hair Care - $59.99
+                <input
+                    type="checkbox"
+                    formControlName="hair"
+                >
+                Hair Care - $59.99
             </li>
         </label>
         <br>
         <label>
             <li>
-            <input type="checkbox" formControlName="deworming">
-            De-worming - $109.99
+                <input
+                    type="checkbox"
+                    formControlName="deworming"
+                >
+                De-worming - $109.99
             </li>
         </label>
         <hr>
         <br>
 
-            <p>Are you opt-in our membership program?</p>
-            <input type="radio" formControlName="membership" name="membership" value="yes">
-            <label><b>Yes</b> - <i>additional 10% Off</i></label>
-            <input type="radio" formControlName="membership" name="membership" value="no">
-            <label><b>No</b></label>
+        <p>Are you opt-in our membership program?</p>
+        <input
+            type="radio"
+            formControlName="membership"
+            name="membership"
+            value="yes"
+        >
+        <label><b>Yes</b> - <i>additional 10% Off</i></label>
+        <input
+            type="radio"
+            formControlName="membership"
+            name="membership"
+            value="no"
+        >
+        <label><b>No</b></label>
 
     </form>
     <br>

@@ -5,6 +5,7 @@
 
     <form [formGroup]="formGroup">
         <div
+            class="tab"
             *ngFor="let productType of this.CategoryArr"
             (click)="OnSelectionChanged($event, productType.id)"
         >
