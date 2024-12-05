@@ -1,9 +1,9 @@
 
   <div>
     <!-- <h2 style="text-align: center;">Cat</h2> -->
-    <form [formGroup]="priceForm">
-      <input type="text" formControlName="textInput"  id="textInput" placeholder="Cat Name" [(ngModel)]="textInput" (input)="updateText()" ><br>
-      
+    <form >
+      <input type="text" formControlName="textInput"  id="textInput" placeholder="Cat Name"  (input)="updateText()" ><br>
+
       <label>
         <input type="checkbox" formControlName="exam">
         Exam (recommand) - $49.99
@@ -67,4 +67,3 @@
 
 
 
-  

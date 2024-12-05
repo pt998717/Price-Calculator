@@ -1,0 +1,1 @@
+export * from './animal-hospital-view-container/animal-hospital-view-container.component'
