@@ -9,12 +9,14 @@ import {FormsModule} from '@angular/forms';
 import { BomComponent } from './feature/bom/bom.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { DogComponent } from './feature/catWell/catWell.component';
+import { AnimalHospitalViewContainerComponent } from './pages/animal-hospital-view-container/animal-hospital-view-container.component';
 @NgModule({
   declarations: [
     AppComponent,
     CalComponent,
     BomComponent,
-    DogComponent
+    DogComponent,
+    AnimalHospitalViewContainerComponent
   ],
   imports: [
     BrowserModule,

@@ -1,8 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Validator, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DogService } from '../catWell.service'
+import { AnimalHostipal } from '../animal-hospital.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ProductTypes, ProductNavigationType,ProductType,ProductTypeList,ProductTypeListArr } from '../models/enum';
 @Component({
   selector: 'catWellness',
   templateUrl: './catWell.component.html',
@@ -14,9 +17,9 @@ export class DogComponent implements OnInit {
   wbasePrice: number =0;
   wtotalPrice: number = this.wbasePrice;
   private unsubscribe$ = new Subject<void>(); // For cleanup
-  constructor(private fb: FormBuilder, private DogService: DogService) { 
+  constructor(private fb: FormBuilder, private DogService: DogService, private animalService: AnimalHostipal) { 
   this.wpriceForm = this.fb.group({
-    wash: [false],
+    wash: (Validators.required, false),
     hair: [false],
     deworming: [false],
     membership: [false]
@@ -45,6 +48,7 @@ export class DogComponent implements OnInit {
           this.DogService.setFormData(formData); // Update only if different
         }
         this.formChanged.emit(); // Emit event when form changes
+        this.animalService.saveFormData(ProductTypes.Cat_Wellness,formData)
         this.calculateTotalPrice(formData);
         
       });
@@ -72,4 +76,9 @@ export class DogComponent implements OnInit {
     this.unsubscribe$.complete(); // Clean up the Subject
   }
 
+  addToBom():void{
+      // valitor check
+      // pass -> add into bom
+      // fail, show error message
+  }
 }
