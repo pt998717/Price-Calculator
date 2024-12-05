@@ -15,4 +15,7 @@ export class AppComponent {
     this.isComponentVisible = true;
   }
 
+  onFormChanged() {
+    this.isComponentVisible = false; // Hide the component when the form changes
+  }
 }

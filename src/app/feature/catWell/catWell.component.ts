@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DogService } from '../catWell.service'
 import { Subject } from 'rxjs';
@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./catWell.component.css']
 })
 export class DogComponent implements OnInit {
+  @Output() formChanged = new EventEmitter<void>(); // Event to notify parent
   wpriceForm: FormGroup;
   wbasePrice: number =0;
   wtotalPrice: number = this.wbasePrice;
@@ -43,6 +44,7 @@ export class DogComponent implements OnInit {
         if (JSON.stringify(formData) !== JSON.stringify(this.DogService.getFormData())) {
           this.DogService.setFormData(formData); // Update only if different
         }
+        this.formChanged.emit(); // Emit event when form changes
         this.calculateTotalPrice(formData);
         
       });

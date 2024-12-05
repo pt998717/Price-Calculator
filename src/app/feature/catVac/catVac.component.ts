@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PriceService } from '../catVac.service';
 import { Subject } from 'rxjs';
@@ -9,6 +9,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./catVac.component.css']
 })
 export class CalComponent implements OnInit {
+  @Output() formChanged = new EventEmitter<void>(); // Event to notify parent
   priceForm: FormGroup;
   basePrice: number = 0; // base price for the product
   totalPrice: number = this.basePrice;
@@ -60,6 +61,7 @@ export class CalComponent implements OnInit {
         if (JSON.stringify(formData) !== JSON.stringify(this.priceService.getFormData())) {
           this.priceService.setFormData(formData); // Update only if different
         }
+        this.formChanged.emit(); // Emit event when form changes
         this.calculateTotalPrice(formData);
         
       });

@@ -18,13 +18,13 @@
 
 
   <div class="flex-child">
-    <catVac *ngIf="selectedAnimal === 'catVac'"></catVac>
-    <catWellness *ngIf="selectedAnimal === 'catWellness'"></catWellness>
+    <catVac *ngIf="selectedAnimal === 'catVac'" (formChanged)="onFormChanged()"></catVac>
+    <catWellness *ngIf="selectedAnimal === 'catWellness'" (formChanged)="onFormChanged()"></catWellness>
   </div>
     
 
-  <div class="flex-child">
-    <app-bom *ngIf="isComponentVisible" ></app-bom>
+  <div class="flex-child" *ngIf="isComponentVisible">
+    <app-bom></app-bom>
   </div>
 </div>
 </main>
