@@ -1,19 +1,22 @@
 <body>
     <header>
-        <a style="margin-top: 20px;">Animal Hospital</a>
+        <img id="img-logo" src="assets/images/logo.png" alt="logo">
+        <a id="tagline">Your pet's health Our priority</a>
     </header>
 
-    <form [formGroup]="formGroup">
-        <div
-            class="tab"
+    <form [formGroup]="formGroup" class="parent">
+        <div class="flex">
+            <div
+            class="flex-item"
             *ngFor="let productType of this.CategoryArr"
             (click)="OnSelectionChanged($event, productType.id)"
-        >
-            <div>
-                {{productType.category}}
+            >
+            {{productType.category}}
             </div>
         </div>
     </form>
+
+    <hr>
 
     <ng-container [ngSwitch]="true">
         <ng-container *ngSwitchCase="this.CurrentProductType===TYPE.Cat_Vaccine">
@@ -25,6 +28,7 @@
         <ng-container *ngSwitchCase="this.CurrentProductType===TYPE.BOM">
             <app-bom></app-bom>
         </ng-container>
+
     </ng-container>
 
 </body>

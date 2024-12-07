@@ -27,16 +27,16 @@ export class AnimalHospitalViewContainerComponent implements OnInit {
         private formBuilder: FormBuilder
     ) { }
 
-    selectAnimal(animal: string) {
-        this.selectedAnimal = animal;
-    }
-    showBom() {
-        this.isComponentVisible = true;
-    }
+    // selectAnimal(animal: string) {
+    //     this.selectedAnimal = animal;
+    // }
+    // showBom() {
+    //     this.isComponentVisible = true;
+    // }
 
-    onFormChanged() {
-        this.isComponentVisible = false; // Hide the component when the form changes
-    }
+    // onFormChanged() {
+    //     this.isComponentVisible = false; // Hide the component when the form changes
+    // }
 
     ngOnInit(): void {
         this.initListener();
