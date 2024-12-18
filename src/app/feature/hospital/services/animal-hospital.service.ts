@@ -14,6 +14,11 @@ export interface SelectedService {
 export class AnimalHostipal {
     productTypeChanged: EventEmitter<number> = new EventEmitter<number>();
 
+    private currentProductType = new BehaviorSubject<number>(0); // Default component
+    currentProductType$ = this.currentProductType.asObservable();
+
+
+
     //Behavior Subject to listent the service changed
     private _selectedServices = new BehaviorSubject<SelectedService[]>([]);
     selectedServices$ = this._selectedServices.asObservable();
@@ -23,6 +28,8 @@ export class AnimalHostipal {
     private formState_ServiceBundle = new BehaviorSubject<any>(null);
     private panelState = new BehaviorSubject<boolean>(false);
     private formData: { [key: string]: any } = {};
+
+
     addSelectedService(componentName: string, data: any): boolean {
         const selectedService: SelectedService = {
             id: this.nextId++,
@@ -44,12 +51,19 @@ export class AnimalHostipal {
 
         if (duplicateData) {
             this.savePanelState(false);
+            this.nextId--;
             return false;
         }
         this._selectedServices.next([...currentServices, selectedService]);
         this.savePanelState(true);
         return true;
     }
+
+
+    // Method to switch the current component
+    switchProductType(productType: number): void {
+        this.currentProductType.next(productType);
+      }
 
     //remove service
     removeSelectedService(id: number) {

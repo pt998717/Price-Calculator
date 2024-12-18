@@ -99,18 +99,3 @@ footer {
     margin-top: 20px;
 }
 
-/* Buttons */
-button {
-    background-color: #0056b3;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 0px;
-    transition: background 0.3s;
-}
-
-
-button:hover {
-    background-color: #003d7a;
-}

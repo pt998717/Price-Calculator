@@ -1,16 +1,13 @@
-
-
-<div >
-  <h2 >Summary for {{inputText}}</h2>
-  <ag-grid-angular
-    style="width: 100%; height: 400px;"
-    class="ag-theme-alpine"
-    [rowData]="rowData"
-    [columnDefs]="columnDefs"
-    [defaultColDef]="{ resizable: true, sortable: true, filter: true }"
-    [pagination]="true"
-    [getRowStyle]="getRowStyle">
-  </ag-grid-angular>
-
-  <!-- <h3 style="text-align: end;">Total Price: ${{ totalPrice.toFixed(2) }}</h3> -->
-</div>
+<ag-grid-angular
+  style="width: 100%; height: 500px;"
+  class="ag-theme-quartz"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  [defaultColDef]="defaultColDef"
+  [rowGroupPanelShow]="'always'"
+  [groupDisplayType]="'groupRows'"
+  [groupDefaultExpanded]="1"
+  [animateRows]="true"
+  (gridReady)="onGridReady($event)"
+>
+</ag-grid-angular>

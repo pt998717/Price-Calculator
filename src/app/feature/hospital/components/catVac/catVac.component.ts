@@ -1,8 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Validator, Validators } from '@angular/forms';
 import { PriceService } from '../../services/catVac.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ProductType, ProductNavigationType, ProductTypeList, ProductTypeListArr } from '../../models/enum';
+import { AnimalHostipal } from '../../services/animal-hospital.service';
 @Component({
     selector: 'catVac',
     templateUrl: './catVac.component.html',
@@ -15,18 +18,13 @@ export class CalComponent implements OnInit {
     totalPrice: number = this.basePrice;
     textInput: string = '';
     private unsubscribe$ = new Subject<void>(); // For cleanup
-    constructor(private fb: FormBuilder, private priceService: PriceService) {
+    constructor(private fb: FormBuilder, private priceService: PriceService, private animalHospital: AnimalHostipal) {
         this.priceForm = this.fb.group({
-            textInput: "",
-            exam: [false],
-            core1: [false],
-            core2: [false],
-            core3: [false],
-            core4: [false],
-            core5: [false],
-            noncore1: [false],
-            noncore2: [false],
-            noncore3: [false],
+            textInput: ["", Validators.required],
+            Exam: [false],
+            FelineP: [false],
+            FHV1: [false],
+            FelineC: [false],
             select: ['']
         });
         this.priceService.formData
@@ -72,7 +70,21 @@ export class CalComponent implements OnInit {
             });
     };
 
-
+    addToBom(): void {
+        if (this.priceForm.invalid) {
+            this.priceForm.markAllAsTouched(); // Highlight all invalid fields
+            return;
+        }
+        const formData = this.priceForm.value;
+        //save data in service
+        const success = this.animalHospital.addSelectedService('Catvaccine', formData);
+        const emptyInput = this.animalHospital.isBomEmpty;
+        if (success) {
+            this.animalHospital.switchProductType(ProductType.BOM);
+        } else {
+            alert('Duplicate data detected!');
+        }
+      }
 
     updateText() {
         this.priceService.updateText(this.textInput);
@@ -80,38 +92,23 @@ export class CalComponent implements OnInit {
 
     calculateTotalPrice(formData: any) {
         this.totalPrice = this.basePrice;
-        if (this.priceForm.get('exam')?.value) {
+        if (this.priceForm.get('Exam')?.value) {
             this.totalPrice += 49.99;
         }
-        if (this.priceForm.get('core1')?.value) {
+        if (this.priceForm.get('FelineP')?.value) {
             this.totalPrice += 39.99;
         }
-        if (this.priceForm.get('core2')?.value) {
+        if (this.priceForm.get('FHV1')?.value) {
             this.totalPrice += 58.99;
         }
-        if (this.priceForm.get('core3')?.value) {
+        if (this.priceForm.get('FelineC')?.value) {
             this.totalPrice += 48.99;
         }
-        if (this.priceForm.get('core4')?.value) {
-            this.totalPrice += 58.99;
-        }
-        if (this.priceForm.get('core5')?.value) {
-            this.totalPrice += 118.99;
-        }
-        if (this.priceForm.get('noncore1')?.value) {
-            this.totalPrice += 109.99;
-        }
-        if (this.priceForm.get('noncore2')?.value) {
-            this.totalPrice += 109.99;
-        }
-        if (this.priceForm.get('noncore3')?.value) {
-            this.totalPrice += 109.99;
-        }
         switch (this.priceForm.get('select')?.value) {
-            case 'Male':
+            case 'NeuterM':
                 this.totalPrice += 249.99;
                 break;
-            case 'Female':
+            case 'NeuterF':
                 this.totalPrice += 329.99;
                 break;
         }

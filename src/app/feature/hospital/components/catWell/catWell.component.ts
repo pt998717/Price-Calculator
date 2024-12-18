@@ -13,18 +13,21 @@ import { ProductTypes, ProductNavigationType, ProductType, ProductTypeList, Prod
 })
 export class DogComponent implements OnInit {
     @Output() formChanged = new EventEmitter<void>(); // Event to notify parent
-    wpriceForm: FormGroup;
+    public wpriceForm: FormGroup;
     wbasePrice: number = 0;
     wtotalPrice: number = this.wbasePrice;
+    textinput: string = '';
     private unsubscribe$ = new Subject<void>(); // For cleanup
-    constructor(private fb: FormBuilder, private DogService: DogService, private animalService: AnimalHostipal) {
+    constructor(private fb: FormBuilder, private DogService: DogService, private animalHospital: AnimalHostipal) {
         this.wpriceForm = this.fb.group({
-            wash: (Validators.required, false),
+            textinput: ["", Validators.required],
+            wash: (false),
             hair: [false],
             deworming: [false],
-            membership: [false]
+            select: "None",
+            membership: [false, Validators.required],
         });
-        this.DogService.wformData
+        this.DogService.formData
             .pipe(takeUntil(this.unsubscribe$)) // Automatically unsubscribe when the component is destroyed
             .subscribe((savedData) => {
                 if (savedData) {
@@ -32,9 +35,15 @@ export class DogComponent implements OnInit {
                     this.calculateTotalPrice(savedData);
                 }
             });
+            // Subscribe to text changes from the service
+        this.DogService.currentText
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((text) => {
+                this.textinput = text;
+            });
     }
     ngOnInit(): void {
-        this.DogService.wformData
+        this.DogService.formData
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe((savedData) => {
                 if (savedData && JSON.stringify(savedData) !== JSON.stringify(this.wpriceForm.value)) {
@@ -48,11 +57,34 @@ export class DogComponent implements OnInit {
                     this.DogService.setFormData(formData); // Update only if different
                 }
                 this.formChanged.emit(); // Emit event when form changes
-                this.animalService.saveFormData(ProductTypes.Cat_Wellness, formData)
                 this.calculateTotalPrice(formData);
 
             });
+        this.DogService.currentText
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe((text) => {
+                this.textinput = text;
+            });
 
+    }
+
+    addToBom(): void {
+        if (this.wpriceForm.invalid) {
+            this.wpriceForm.markAllAsTouched(); // Highlight all invalid fields
+            return;
+        }
+        const formData = this.wpriceForm.value;
+        //save data in service
+        const success = this.animalHospital.addSelectedService('CatWellne', formData);
+        const emptyInput = this.animalHospital.isBomEmpty;
+        if (success) {
+            this.animalHospital.switchProductType(ProductType.BOM);
+        } else {
+            alert('Duplicate data detected!');
+        }
+    }
+    updateText() {
+        this.DogService.updateText(this.textinput);
     }
 
     calculateTotalPrice(formData: any) {
@@ -74,11 +106,5 @@ export class DogComponent implements OnInit {
     ngOnDestroy(): void {
         this.unsubscribe$.next(); // Signal all subscriptions to complete
         this.unsubscribe$.complete(); // Clean up the Subject
-    }
-
-    addToBom(): void {
-        // valitor check
-        // pass -> add into bom
-        // fail, show error message
     }
 }

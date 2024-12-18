@@ -4,6 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { CategoryModel } from '../../models/enum';
 import { ProductType, ProductNavigationType, ProductTypeList, ProductTypeListArr } from '../../models/enum';
 import { Subscription } from 'rxjs';
+import { AnimalHostipal } from '../../services/animal-hospital.service';
 @Component({
     selector: 'app-animal-hospital-view-container',
     templateUrl: './animal-hospital-view-container.component.html',
@@ -24,7 +25,8 @@ export class AnimalHospitalViewContainerComponent implements OnInit {
     isComponentVisible = false;
 
     constructor(
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private animalHospital: AnimalHostipal
     ) { }
 
     // selectAnimal(animal: string) {
@@ -49,6 +51,11 @@ export class AnimalHospitalViewContainerComponent implements OnInit {
                 order: 1,
             }
         })
+
+        // Subscribe to the product type state
+        this.animalHospital.currentProductType$.subscribe(type => {
+        this.CurrentProductType = type;
+      });
     }
 
 
@@ -62,11 +69,8 @@ export class AnimalHospitalViewContainerComponent implements OnInit {
         })
     }
 
-    OnSelectionChanged($event: any, id: number): void {
-        this.formGroup.get('ProductType')?.setValue(id);
-        this.CurrentProductType = parseInt(
-            this.formGroup.get('ProductType')?.value,
-        )
-    }
+    OnSelectionChanged(event: Event, productTypeId: number): void {
+        this.animalHospital.switchProductType(productTypeId);
+      }
 
 }

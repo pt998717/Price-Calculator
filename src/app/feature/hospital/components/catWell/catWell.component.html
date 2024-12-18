@@ -1,55 +1,86 @@
-<div>
+<div style="text-align: right; margin-right: 220px; margin-top: 20px;"><button (click)="addToBom()" [disabled]="wpriceForm.invalid">BOM</button></div>
+<div style="text-align: center;">
     <form [formGroup]="wpriceForm">
-        <label>
-            <li>
+        <input
+            type="text"
+            formControlName="textinput"
+            placeholder="Cat Name"
+            [(ngModel)]="textinput"
+            (input)="updateText()"
+        >
+        <!-- error message -->
+        <div *ngIf="wpriceForm.get('textinput')?.invalid && wpriceForm.get('textinput')?.touched" class="text-danger">
+            This field is required.
+          </div><br>
+
+        <label class="checkbox-label">
                 <input
                     type="checkbox"
                     formControlName="wash"
                 >
-                Washing - $79.99
-            </li>
+                Washing <span>$79.99</span>
         </label>
         <br>
-        <label>
-            <li>
+        <label class="checkbox-label">
                 <input
                     type="checkbox"
                     formControlName="hair"
                 >
-                Hair Care - $59.99
-            </li>
+                Hair Care <span>$59.99</span>
         </label>
         <br>
-        <label>
-            <li>
+        <label class="checkbox-label">
                 <input
                     type="checkbox"
                     formControlName="deworming"
                 >
-                De-worming - $109.99
-            </li>
+                De-worming <span>$109.99</span>
         </label>
         <hr>
         <br>
 
-        <p>Are you opt-in our membership program?</p>
-        <input
-            type="radio"
-            formControlName="membership"
-            name="membership"
-            value="yes"
-        >
-        <label><b>Yes</b> - <i>additional 10% Off</i></label>
-        <input
-            type="radio"
-            formControlName="membership"
-            name="membership"
-            value="no"
-        >
-        <label><b>No</b></label>
+        <p>How many times of deworming have done this year?</p>
+        <select formControlName="select">
+            <option
+                value="None"
+                selected
+            >None</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="more">more than 2 times</option>
+        </select>
+        <hr>
 
+        <div class="membership-container">
+        <p>Are you opt-in our membership program?</p>
+        <div class="membership-options">
+            <label>
+                <input
+                type="radio"
+                formControlName="membership"
+                name="membership"
+                value="yes"
+                >
+                <span><b>Yes</b> - <i>additional 10% Off</i></span>
+            </label>
+
+            <label>
+                <input
+                type="radio"
+                formControlName="membership"
+                name="membership"
+                value="no"
+                >
+                <span><b>No</b></span>
+            </label>
+        </div>
+        </div>
+        <!-- <div *ngIf="wpriceForm.get('membership')?.invalid && wpriceForm.get('membership')?.touched" class="text-danger">
+            Please select a membership option.
+        </div> -->
     </form>
     <br>
+
     <hr>
     <h3 style="text-align: end">Total Price: ${{ wtotalPrice.toFixed(2) }}</h3>
 </div>

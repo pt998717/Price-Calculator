@@ -1,104 +1,46 @@
-<div>
-    <!-- <h2 style="text-align: center;">Cat</h2> -->
+<div style="text-align: right; margin-right: 220px; margin-top: 20px;"><button (click)="addToBom()" [disabled]="priceForm.invalid">BOM</button></div>
+<div style="text-align: center;">
     <form [formGroup]="priceForm">
         <input
             type="text"
             formControlName="textInput"
-            id="textInput"
             placeholder="Cat Name"
             [(ngModel)]="textInput"
             (input)="updateText()"
-        ><br>
+        >
+        <!-- error message -->
+        <div *ngIf="priceForm.get('textInput')?.invalid && priceForm.get('textInput')?.touched" class="text-danger">
+            This field is required.
+          </div><br>
 
-        <label>
-            <input
-                type="checkbox"
-                formControlName="exam"
-            >
-            Exam (recommand) - $49.99
+        <label class="checkbox-label">
+            <input type="checkbox" formControlName="Exam">
+            Exam (recommand) <span>$49.99</span>
         </label>
         <hr>
-        <a>Vaccine options</a><br>
-        <a>
-            <li>Core vaccines</li>
-        </a><br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="core1"
-            >
-            Feline panleukopenia virus - $39.99
-        </label>
-        <br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="core2"
-            >
-            Feline viral rhinotracheitis, also known as herpes virus type 1 (FHV-1)
-            - $58.99
-        </label>
-        <br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="core3"
-            >
-            Feline caliciviruses - $48.99
-        </label>
-        <br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="core4"
-            >
-            Rabies virus - $48.99
-        </label>
-        <br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="core5"
-            >
-            Feline leukemia virus (FeLV) - $118.99
-        </label>
-        <br>
-        <a>
-            <li>Non-Core vaccines</li>
-        </a><br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="noncore1"
-            >
-            Chlamydophila felis (causes feline chlamydiosis) - $109.99
-        </label>
-        <br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="noncore2"
-            >
-            Bordetella bronchiseptica (causes feline bordetellosis) - $109.99
-        </label>
-        <br>
-        <label>
-            <input
-                type="checkbox"
-                formControlName="noncore3"
-            >
-            Feline leukemia virus (FeLV) in adult cats - $109.99
-        </label>
-        <br>
+        <a><li>Core vaccines</li></a><br>
+        <label class="checkbox-label">
+        <input type="checkbox" formControlName="FelineP" >
+            Feline panleukopenia <span>$39.99</span>
+        </label><br>
+        <label class="checkbox-label">
+            <input type="checkbox" formControlName="FHV1">
+            Feline viral rhinotracheitis, also known as herpes virus type 1 (FHV-1) <span>$58.99</span>
+        </label><br>
+        <label class="checkbox-label">
+            <input type="checkbox" formControlName="FelineC">
+            Feline caliciviruses <span>$48.99</span>
+        </label><br>
         <hr>
+
         <select formControlName="select">
             <option
                 value=""
                 disabled
                 selected
             >Neutering for Male/Female</option>
-            <option value="Male">Male - $249.99</option>
-            <option value="Female">Female - $329.99</option>
+            <option value="NeuterM">Male - $249.99</option>
+            <option value="NeuterF">Female - $329.99</option>
         </select>
     </form>
     <br>
