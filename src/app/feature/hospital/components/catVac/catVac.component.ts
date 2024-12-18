@@ -1,24 +1,32 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validator, Validators } from '@angular/forms';
 import { PriceService } from '../../services/catVac.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { ProductType, ProductNavigationType, ProductTypeList, ProductTypeListArr } from '../../models/enum';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, } from 'rxjs/operators';
+import { ProductType, ProductTypes, ProductTypeListArr } from '../../models/enum';
 import { AnimalHostipal } from '../../services/animal-hospital.service';
 @Component({
     selector: 'catVac',
     templateUrl: './catVac.component.html',
     styleUrls: ['./catVac.component.css']
 })
-export class CalComponent implements OnInit {
+export class CalComponent implements OnInit, OnDestroy {
     @Output() formChanged = new EventEmitter<void>(); // Event to notify parent
-    public priceForm: FormGroup;
-    basePrice: number = 0; // base price for the product
-    totalPrice: number = this.basePrice;
-    textInput: string = '';
-    private unsubscribe$ = new Subject<void>(); // For cleanup
-    constructor(private fb: FormBuilder, private priceService: PriceService, private animalHospital: AnimalHostipal) {
+    public priceForm!: FormGroup;
+    public basePrice: number = 0; // base price for the product
+    public totalPrice: number = this.basePrice;
+    private subscribe = new Subscription();
+    constructor(private fb: FormBuilder, private animalHospital: AnimalHostipal) { }
+
+    ngOnInit(): void {
+        this.initialFormGroup();
+        this.initialListener();
+        this.restoreData();
+        this.calculateTotalPrice();
+    };
+
+    initialFormGroup() {
         this.priceForm = this.fb.group({
             textInput: ["", Validators.required],
             Exam: [false],
@@ -27,48 +35,28 @@ export class CalComponent implements OnInit {
             FelineC: [false],
             select: ['']
         });
-        this.priceService.formData
-            .pipe(takeUntil(this.unsubscribe$)) // Automatically unsubscribe when the component is destroyed
-            .subscribe((savedData) => {
-                if (savedData) {
-                    this.priceForm.setValue(savedData);
-                    this.calculateTotalPrice(savedData);
-                }
-            });
-
-        // Subscribe to text changes from the service
-        this.priceService.currentText
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((text) => {
-                this.textInput = text;
-            });
     }
 
 
-    ngOnInit(): void {
-        this.priceService.formData
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((savedData) => {
-                if (savedData && JSON.stringify(savedData) !== JSON.stringify(this.priceForm.value)) {
-                    this.priceForm.setValue(savedData, { emitEvent: false }); // Avoid triggering valueChanges
-                }
-            });
-        this.priceForm.valueChanges
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((formData) => {
-                if (JSON.stringify(formData) !== JSON.stringify(this.priceService.getFormData())) {
-                    this.priceService.setFormData(formData); // Update only if different
-                }
-                this.formChanged.emit(); // Emit event when form changes
-                this.calculateTotalPrice(formData);
+    initialListener() {
+        this.subscribe.add(
+            this.priceForm.valueChanges.subscribe((next) => {
+                this.totalPrice = 0;
+                this.calculateTotalPrice();
+            })
+        )
+        this.subscribe.add(
+            this.priceForm.valueChanges.pipe(debounceTime(300)).subscribe((newFormData) => {
+                this.animalHospital.saveFormData(ProductTypes.Cat_Vaccine, newFormData)
+            })
+        )
+    }
 
-            });
-        this.priceService.currentText
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((text) => {
-                this.textInput = text;
-            });
-    };
+    restoreData() {
+        var data = this.animalHospital.getSavedFormData(ProductTypes.Cat_Vaccine);
+        console.log(data)
+        this.priceForm.patchValue(data, { emitEvent: false })
+    }
 
     addToBom(): void {
         if (this.priceForm.invalid) {
@@ -84,13 +72,9 @@ export class CalComponent implements OnInit {
         } else {
             alert('Duplicate data detected!');
         }
-      }
-
-    updateText() {
-        this.priceService.updateText(this.textInput);
     }
 
-    calculateTotalPrice(formData: any) {
+    calculateTotalPrice() {
         this.totalPrice = this.basePrice;
         if (this.priceForm.get('Exam')?.value) {
             this.totalPrice += 49.99;
@@ -115,7 +99,6 @@ export class CalComponent implements OnInit {
 
     }
     ngOnDestroy(): void {
-        this.unsubscribe$.next(); // Signal all subscriptions to complete
-        this.unsubscribe$.complete(); // Clean up the Subject
+        this.subscribe.unsubscribe();
     }
 }

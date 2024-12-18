@@ -104,5 +104,8 @@
       }
     }
   },
-  "defaultProject": "price-calculator"
+  "defaultProject": "price-calculator",
+  "cli": {
+    "analytics": "47678023-9bdc-4ab1-8e44-279e0a3f2dbb"
+  }
 }

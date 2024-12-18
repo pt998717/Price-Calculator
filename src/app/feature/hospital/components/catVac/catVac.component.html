@@ -5,8 +5,6 @@
             type="text"
             formControlName="textInput"
             placeholder="Cat Name"
-            [(ngModel)]="textInput"
-            (input)="updateText()"
         >
         <!-- error message -->
         <div *ngIf="priceForm.get('textInput')?.invalid && priceForm.get('textInput')?.touched" class="text-danger">
