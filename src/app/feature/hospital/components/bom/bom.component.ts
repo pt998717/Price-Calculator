@@ -8,9 +8,9 @@ type ServicePrices = {
     FelineC: number;
     NeuterM: number;
     NeuterF: number;
-    wash: number;
-    hair: number;
-    deworming: number;
+    Washing: number;
+    HairCare: number;
+    Deworming: number;
   };
 @Component({
     selector: 'app-bom',
@@ -22,19 +22,32 @@ export class BomComponent implements OnInit {
     rowData: any[] = [];
     savedServices: SelectedService[] = [];
 
+
+
     columnDefs = [
-        { field: 'id', headerName: 'ID' },
+        { field: 'id', headerName: 'ID',},
         { field: 'name', headerName: 'Pet Name'},
         { field: 'componentName', headerName: 'Service', rowGroup: true },
         { field: 'package', headerName: 'Package'},
         { field: 'price', headerName: 'Price'},
-         // Ensure grouping is enabled
+        {
+            headerName: 'Actions',
+            cellRenderer: (params: any) => {
+                // Add a button for the delete action
+                const button = document.createElement('button');
+                button.textContent = 'Delete';
+                button.classList.add('btn', 'btn-danger');
+                button.addEventListener('click', () => this.deleteRow(params));
+                return button;
+            }
+        }
       ];
       defaultColDef = {
         flex: 1,
         sortable: true,
-        resizable: true,
+        resizable: true
       };
+
 
 
     // Price mapping for each option
@@ -45,19 +58,20 @@ export class BomComponent implements OnInit {
         FelineC: 48.99,
         NeuterM: 249.99,
         NeuterF: 329.99,
-        wash: 79.99,
-        hair: 59.99,
-        deworming: 109.99,
+        Washing: 79.99,
+        HairCare: 59.99,
+        Deworming: 109.99,
     };
 
 
     constructor(
-        private animalHospital: AnimalHostipal) {
-
-
-    }
+        private animalHospital: AnimalHostipal) {  }
 
     ngOnInit(): void {
+        this.feedGridData();
+    }
+
+    feedGridData(): void{
 
         this.animalHospital.selectedServices$.subscribe(services => {
             this.rowData = services.map(service => {
@@ -73,7 +87,6 @@ export class BomComponent implements OnInit {
               };
             });
           });
-
     }
 
     getServiceName(service: any): string {
@@ -87,7 +100,7 @@ export class BomComponent implements OnInit {
       }
 
     getPackageField(data: any): string {
-        const fields = ['Exam', 'FelineP', 'FHV1', 'FelineC','wash','hair','deworming']; // Specify the fields to include
+        const fields = ['Exam', 'FelineP', 'FHV1', 'FelineC','Washing','HairCare','Deworming']; // Specify the fields to include
         const activeFields = fields.filter(field => data[field]); // Check which fields are true
         // Add the select field if a value is chosen
         if (data.select && data.select!='1' && data.select!='2' && data.select!='None') {
@@ -96,26 +109,34 @@ export class BomComponent implements OnInit {
         return activeFields.join(' + '); // Join them with a '+' separator
       }
 
-      calculatePrice(data: any): number {
-        const fields: (keyof ServicePrices)[] = ['Exam', 'FelineP', 'FHV1', 'FelineC','wash','hair','deworming'];
+    calculatePrice(data: any): number {
+        const fields: (keyof ServicePrices)[] = ['Exam', 'FelineP', 'FHV1', 'FelineC','Washing','HairCare','Deworming'];
         let totalPrice = 0;
 
         // Sum prices for selected options
         fields.forEach(field => {
-          if (data[field]) {
+            if (data[field]) {
             totalPrice += this.servicePrices[field];
-          }
+            }
         });
 
         // Add price for the 'select' field if it matches a valid option
         if (data.select && this.servicePrices[data.select as keyof ServicePrices]) {
-          totalPrice += this.servicePrices[data.select as keyof ServicePrices];
+            totalPrice += this.servicePrices[data.select as keyof ServicePrices];
         }
 
         return totalPrice;
-      }
+    }
     onGridReady(params: any) {
         params.api.sizeColumnsToFit();
-      }
+        params.api.hideOverlay();
+    }
+    deleteRow(params: any): void {
+        const rowId = params.data.id; // Get the ID of the row to be deleted
+        this.rowData = this.rowData.filter(row => row.id !== rowId); // Remove the row from rowData
+        this.animalHospital.removeSelectedService(rowId);
+    }
+
+
 
 }

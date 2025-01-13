@@ -1,3 +1,22 @@
 
 @import '~ag-grid-community/styles/ag-grid.css';
 
+.ag-theme-quartz {
+    background-color: #fbf8f4 !important;
+}
+
+.ag-theme-quartz .ag-row {
+    background-color: #fbf8f4 !important;
+}
+
+.ag-theme-quartz .ag-header {
+    background-color: #b3c0bf !important;
+    font-weight: bold;
+}
+.ag-theme-quartz .ag-body-viewport {
+    background-color: #fbf8f4 !important;
+}
+.ag-cell {
+    display: flex;
+    align-items: center; /* Vertically center content */
+}

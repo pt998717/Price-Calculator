@@ -5,8 +5,6 @@
             type="text"
             formControlName="textinput"
             placeholder="Cat Name"
-            [(ngModel)]="textinput"
-            (input)="updateText()"
         >
         <!-- error message -->
         <div *ngIf="wpriceForm.get('textinput')?.invalid && wpriceForm.get('textinput')?.touched" class="text-danger">
@@ -16,7 +14,7 @@
         <label class="checkbox-label">
                 <input
                     type="checkbox"
-                    formControlName="wash"
+                    formControlName="Washing"
                 >
                 Washing <span>$79.99</span>
         </label>
@@ -24,7 +22,7 @@
         <label class="checkbox-label">
                 <input
                     type="checkbox"
-                    formControlName="hair"
+                    formControlName="HairCare"
                 >
                 Hair Care <span>$59.99</span>
         </label>
@@ -32,7 +30,7 @@
         <label class="checkbox-label">
                 <input
                     type="checkbox"
-                    formControlName="deworming"
+                    formControlName="Deworming"
                 >
                 De-worming <span>$109.99</span>
         </label>

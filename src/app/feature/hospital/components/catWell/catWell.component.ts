@@ -1,71 +1,60 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Validator, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DogService } from '../../services/catWell.service'
 import { AnimalHostipal } from '../../services/animal-hospital.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, Subscription } from 'rxjs';
+import { debounce, debounceTime } from 'rxjs/operators';
 import { ProductTypes, ProductNavigationType, ProductType, ProductTypeList, ProductTypeListArr } from '../../models/enum';
 @Component({
     selector: 'catWellness',
     templateUrl: './catWell.component.html',
     styleUrls: ['./catWell.component.css']
 })
-export class DogComponent implements OnInit {
+export class DogComponent implements OnInit, OnDestroy {
     @Output() formChanged = new EventEmitter<void>(); // Event to notify parent
-    public wpriceForm: FormGroup;
-    wbasePrice: number = 0;
-    wtotalPrice: number = this.wbasePrice;
-    textinput: string = '';
-    private unsubscribe$ = new Subject<void>(); // For cleanup
-    constructor(private fb: FormBuilder, private DogService: DogService, private animalHospital: AnimalHostipal) {
+    public wpriceForm!: FormGroup;
+    public wbasePrice: number = 0;
+    public wtotalPrice: number = this.wbasePrice;
+    private subscribe = new Subscription();
+    constructor(private fb: FormBuilder, private animalHospital: AnimalHostipal) {
+
+    }
+    ngOnInit(): void {
+        this.initialFormGroup();
+        this.initialListener();
+        this.restoreData();
+        this.calculateTotalPrice();
+    }
+
+    initialFormGroup() {
         this.wpriceForm = this.fb.group({
             textinput: ["", Validators.required],
-            wash: (false),
-            hair: [false],
-            deworming: [false],
+            Washing: (false),
+            HairCare: [false],
+            Deworming: [false],
             select: "None",
             membership: [false, Validators.required],
         });
-        this.DogService.formData
-            .pipe(takeUntil(this.unsubscribe$)) // Automatically unsubscribe when the component is destroyed
-            .subscribe((savedData) => {
-                if (savedData) {
-                    this.wpriceForm.setValue(savedData);
-                    this.calculateTotalPrice(savedData);
-                }
-            });
-            // Subscribe to text changes from the service
-        this.DogService.currentText
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((text) => {
-                this.textinput = text;
-            });
     }
-    ngOnInit(): void {
-        this.DogService.formData
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((savedData) => {
-                if (savedData && JSON.stringify(savedData) !== JSON.stringify(this.wpriceForm.value)) {
-                    this.wpriceForm.setValue(savedData, { emitEvent: false }); // Avoid triggering valueChanges
-                }
-            });
-        this.wpriceForm.valueChanges
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((formData) => {
-                if (JSON.stringify(formData) !== JSON.stringify(this.DogService.getFormData())) {
-                    this.DogService.setFormData(formData); // Update only if different
-                }
-                this.formChanged.emit(); // Emit event when form changes
-                this.calculateTotalPrice(formData);
 
-            });
-        this.DogService.currentText
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe((text) => {
-                this.textinput = text;
-            });
+    initialListener() {
+        this.subscribe.add(
+            this.wpriceForm.valueChanges.subscribe((next) => {
+                this.wtotalPrice = 0;
+                this.calculateTotalPrice();
+            })
+        )
+        this.subscribe.add(
+            this.wpriceForm.valueChanges.pipe(
+                debounceTime(300)
+            ).subscribe((data) => {
+                this.animalHospital.saveFormData(ProductTypes.Cat_Wellness, data)})
+        )
+    }
 
+    restoreData() {
+        var data = this.animalHospital.getSavedFormData(ProductTypes.Cat_Wellness);
+        this.wpriceForm.patchValue(data, { emitEvent: false })
     }
 
     addToBom(): void {
@@ -83,19 +72,15 @@ export class DogComponent implements OnInit {
             alert('Duplicate data detected!');
         }
     }
-    updateText() {
-        this.DogService.updateText(this.textinput);
-    }
-
-    calculateTotalPrice(formData: any) {
+    calculateTotalPrice() {
         this.wtotalPrice = this.wbasePrice;
-        if (this.wpriceForm.get('wash')?.value) {
+        if (this.wpriceForm.get('Washing')?.value) {
             this.wtotalPrice += 79.99;
         }
-        if (this.wpriceForm.get('hair')?.value) {
+        if (this.wpriceForm.get('HairCare')?.value) {
             this.wtotalPrice += 59.99;
         }
-        if (this.wpriceForm.get('deworming')?.value) {
+        if (this.wpriceForm.get('Deworming')?.value) {
             this.wtotalPrice += 109.99;
         }
         // if (this.wpriceForm.get('membership')?.value === 'yes') {
@@ -104,7 +89,6 @@ export class DogComponent implements OnInit {
 
     }
     ngOnDestroy(): void {
-        this.unsubscribe$.next(); // Signal all subscriptions to complete
-        this.unsubscribe$.complete(); // Clean up the Subject
+        this.subscribe.unsubscribe();
     }
 }

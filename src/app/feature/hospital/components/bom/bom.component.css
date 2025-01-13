@@ -1,6 +1,11 @@
 
-div{
-    padding-left: 10px;
+ag-grid-angular {
+    padding-top: 20px;
+    font-size: 20px !important;
+    align-items: center !important;
 }
 
-
+.grid-container {
+    display: grid;
+    place-items: center; /* Centers both horizontally and vertically */
+  }

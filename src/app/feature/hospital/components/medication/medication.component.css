@@ -1,0 +1,58 @@
+
+form{
+    display: inline-block;
+    margin-top: 20px;
+    text-align: left;
+}
+h3{
+    padding-left: 10%;
+}
+
+/* Buttons */
+button {
+    background-color: #b78a53;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    padding: 10px 10px;
+    border-radius: 0px;
+    font-size: large;
+    transition: background 0.3s;
+}
+
+
+button:hover {
+    background-color: #302e2d;
+}
+/* invalid styling */
+button:disabled {
+    background-color: #ccc; /* Gray background for disabled button */
+    color: #666;           /* Gray text for better contrast */
+    cursor: not-allowed;   /* Change the cursor to indicate it's not clickable */
+    opacity: 0.7;          /* Optional: reduce opacity for a subtle disabled effect */
+}
+input.ng-invalid.ng-touched {
+    outline: 2px solid red;
+}
+
+
+form input[type="text"],
+form select {
+    display: block;
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    form input[type="text"]:focus,
+    form select:focus {
+        border-color: #4CAF50;
+        box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    }
+    form input[type="text"]:focus::placeholder {
+        color: transparent;
+        transition: color 0.3s ease;
+    }

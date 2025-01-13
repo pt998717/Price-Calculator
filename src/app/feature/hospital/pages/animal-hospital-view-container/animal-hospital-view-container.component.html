@@ -25,6 +25,9 @@
         <ng-container *ngSwitchCase="this.CurrentProductType===TYPE.Cat_Wellness">
             <catWellness></catWellness>
         </ng-container>
+        <ng-container *ngSwitchCase="this.CurrentProductType===TYPE.Medication">
+            <app-medication></app-medication>
+        </ng-container>
         <ng-container *ngSwitchCase="this.CurrentProductType===TYPE.BOM">
             <app-bom></app-bom>
         </ng-container>

@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { CalComponent } from './components/catVac/catVac.component';
 import { DogComponent } from './components/catWell/catWell.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MedicationComponent } from './components/medication/medication.component';
 const pages = [AnimalHospitalViewContainerComponent];
 const components = [
     BomComponent,
@@ -21,6 +22,7 @@ const components = [
     declarations: [
         ...pages,
         ...components,
+        MedicationComponent,
     ],
     imports: [CommonModule, HospitalRoutingModule, AgGridModule, FormsModule, ReactiveFormsModule],
     providers: [AnimalHostipal],

@@ -1,5 +1,6 @@
+<div class="grid-container">
 <ag-grid-angular
-  style="width: 100%; height: 500px;"
+  style="width: 80%; height: 600px;"
   class="ag-theme-quartz"
   [rowData]="rowData"
   [columnDefs]="columnDefs"
@@ -8,6 +9,10 @@
   [groupDisplayType]="'groupRows'"
   [groupDefaultExpanded]="1"
   [animateRows]="true"
+  [headerHeight]="40"
+  [rowHeight]="50"
   (gridReady)="onGridReady($event)"
+  overlayNoRowsTemplate="No Customer Service Founded"
 >
 </ag-grid-angular>
+</div>

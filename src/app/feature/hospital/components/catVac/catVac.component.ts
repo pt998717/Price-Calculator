@@ -1,7 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Validator, Validators } from '@angular/forms';
-import { PriceService } from '../../services/catVac.service';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, } from 'rxjs/operators';
 import { ProductType, ProductTypes, ProductTypeListArr } from '../../models/enum';
@@ -46,7 +45,9 @@ export class CalComponent implements OnInit, OnDestroy {
             })
         )
         this.subscribe.add(
-            this.priceForm.valueChanges.pipe(debounceTime(300)).subscribe((newFormData) => {
+            this.priceForm.valueChanges.pipe(
+                debounceTime(300)
+            ).subscribe((newFormData) => {
                 this.animalHospital.saveFormData(ProductTypes.Cat_Vaccine, newFormData)
             })
         )
@@ -54,7 +55,6 @@ export class CalComponent implements OnInit, OnDestroy {
 
     restoreData() {
         var data = this.animalHospital.getSavedFormData(ProductTypes.Cat_Vaccine);
-        console.log(data)
         this.priceForm.patchValue(data, { emitEvent: false })
     }
 

@@ -1,0 +1,50 @@
+
+<div style="text-align: right; margin-right: 220px; margin-top: 20px;"><button >BOM</button></div>
+<h3>Please enter the number of each medication you'd like to purchuse today</h3>
+<div style="text-align: center;">
+    <form [formGroup]="medicalform">
+        <label>
+            Vitamin C
+        <input
+            type="text"
+            formControlName="VitaminC"
+            >
+            <div *ngIf="medicalform.get('VitaminC')?.invalid && medicalform.get('VitaminC')?.touched" class="text-danger">
+                Please enter the amount from 0-10.
+              </div>
+        </label>
+        <br>
+        <label>
+            <span>Itch Relief</span>
+            <input
+                type="text"
+                formControlName="ItchRelief"
+                >
+            <div *ngIf="medicalform.get('ItchRelief')?.invalid && medicalform.get('ItchRelief')?.touched" class="text-danger">
+                Please enter the amount from 0-10.
+                </div>
+            </label>
+            <br>
+        <label>
+                Dewormers
+            <input
+                type="text"
+                formControlName="Dewormers"
+                >
+            <div *ngIf="medicalform.get('Dewormers')?.invalid && medicalform.get('Dewormers')?.touched" class="text-danger">
+                Please enter the amount from 0-10.
+                </div>
+            </label>
+            <br>
+        <label>
+            Dental Care
+            <input
+                type="text"
+                formControlName="Dental"
+                >
+            <div *ngIf="medicalform.get('Dental')?.invalid && medicalform.get('Dental')?.touched" class="text-danger">
+                Please enter the amount from 0-10.
+                </div>
+            </label>
+    </form>
+</div>

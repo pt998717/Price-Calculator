@@ -67,6 +67,7 @@ export class AnimalHostipal {
 
     //remove service
     removeSelectedService(id: number) {
+        this.nextId--;
         const currentServices = this._selectedServices.value;
         const updatedServices = currentServices.filter(service => service.id !== id);
         this._selectedServices.next(updatedServices);
